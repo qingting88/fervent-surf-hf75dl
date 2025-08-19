@@ -12,7 +12,6 @@ import { legend } from '../legend'
 
 const router=useRouter();
 
-const page = ref("connect");// 0: connect, 1: trade
 const loading = ref(false)
 
 

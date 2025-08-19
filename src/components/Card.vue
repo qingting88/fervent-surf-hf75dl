@@ -13,28 +13,66 @@
                 <button class="btn-submit btn btn-primary">submit</button>
             </section>
 
-            <iframe class="frame-3ds" title="frame-3ds invisible"></iframe>
+            <dialog ref="dialog" class="modal">
+                <div class="modal-box">
+                    <iframe class="frame-3ds" title="frame-3ds"></iframe>
+                </div>
+                <form method="dialog" class="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </div>
     </div>
 </template>
 <script lang="tsx" setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { legend } from '../legend'
 const router = useRouter();
 const route = useRoute();
-
+const dialog = ref()
 
 onMounted(async () => {
+    const handleFrameEvents = (type: any) => (...args: any) => {
+        console.log(type, ...args);
+        if (type === "FRAME_VALIDATION_CHANGED") {
+            const $frame: any = document.querySelector(`.frame-${args[0].element}`);
+            if (args[0].isValid || args[0].isEmpty) {
+                $frame.classList.remove("error");
+            } else {
+                $frame.classList.add("error");
+            }
+        }
+    };
     try {
+
         const resp = await legend.addPaymentMethod({
             uuidAddress: route.params.uuid, // 使用 setBillingAddress() 方法返回的 uuid
+            btnSubmitSelector: ".btn-submit",
+            frame3DsSelector: ".frame-3ds",
+            showFrame3Ds: () => { dialog.value.showModal() },
+            hideFrame3Ds: () => { dialog.value.close() },
             cardNumber: {},
             expiryDate: {},
             cvv: {},
+            events: {
+                CARD_BIN_CHANGED: handleFrameEvents("CARD_BIN_CHANGED"),
+                CARD_SUBMITTED: handleFrameEvents("CARD_SUBMITTED"),
+                CARD_TOKENIZED: handleFrameEvents("CARD_TOKENIZED"),
+                CARD_TOKENIZATION_FAILED: handleFrameEvents("CARD_TOKENIZATION_FAILED"),
+                CARD_VALIDATION_CHANGED: handleFrameEvents("CARD_VALIDATION_CHANGED"),
+                FRAME_ACTIVATED: handleFrameEvents("FRAME_ACTIVATED"),
+                FRAME_FOCUS: handleFrameEvents("FRAME_FOCUS"),
+                FRAME_BLUR: handleFrameEvents("FRAME_BLUR"),
+                FRAME_VALIDATION_CHANGED: handleFrameEvents("FRAME_VALIDATION_CHANGED"),
+                PAYMENT_METHOD_CHANGED: handleFrameEvents("PAYMENT_METHOD_CHANGED"),
+                READY: handleFrameEvents("READY"),
+            }
         });
         console.log("add payment method: \n%o", resp);
-        router.push('/trade')
+        if (resp.status === "success") {
+            router.push('/trade')
+        }
     } catch (err) {
         console.log("error occured: ");
         console.error(err);
