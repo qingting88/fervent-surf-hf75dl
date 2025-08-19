@@ -177,11 +177,14 @@ declare class LegendBase {
   // 获取账单地址
   getBillingAddress(): Promise<LegendBaseTypes.BillingAddress>;
   // 设置账单地址
-  setBillingAddress(params: LegendBaseTypes.BillingAddress): Promise<{message:string,result:string,uuid:string}>;
+  setBillingAddress(params: LegendBaseTypes.BillingAddress): Promise<{ message: string, result: string, uuid: string }>;
   // 获取地区
-  getRegions(params: { parent_id: Number }): Promise<{data:LegendBaseTypes.Region[]}>;
+  getRegions(params: { parent_id: Number }): Promise<{ data: LegendBaseTypes.Region[] }>;
   // 添加支付方式
-  addPaymentMethod(params:any):Promise<any>;
+  addPaymentMethod(params: any): Promise<{
+    data: { type: string, entry: string }
+    status: string
+  }>;
 
 
   // 事件相关
