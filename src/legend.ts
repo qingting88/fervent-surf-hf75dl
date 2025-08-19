@@ -1,0 +1,1 @@
+export const legend= new window.LegendBase({ mode: "sandbox" });
