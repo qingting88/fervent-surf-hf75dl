@@ -7,14 +7,19 @@
         <div>
             <div class="frame-another-input"></div>
             <section class="frame-wrapper flex flex-col space-y-4">
-                <div class="frame-card-number input input-bordered"></div>
-                <div class="frame-expiry-date input input-bordered"></div>
-                <div class="frame-cvv input input-bordered"></div>
+                <div class="frame-card-number input w-full" ></div>
+                <div class="frame-expiry-date input w-full"></div>
+                <div class="frame-cvv input w-full"></div>
                 <button class="btn-submit btn btn-primary">submit</button>
             </section>
 
+            <div class="mockup-code w-full mt-10">
+                <code>card number</code>
+                <code>参考：https://www.checkout.com/docs/developer-resources/testing/test-cards</code>
+            </div>
+
             <dialog ref="dialog" class="modal">
-                <div class="modal-box">
+                <div class="modal-box flex items-center justify-center">
                     <iframe class="frame-3ds" title="frame-3ds"></iframe>
                 </div>
                 <form method="dialog" class="modal-backdrop">
@@ -71,6 +76,7 @@ onMounted(async () => {
         });
         console.log("add payment method: \n%o", resp);
         if (resp.status === "success") {
+            alert("payment method added successfully");
             router.push('/trade')
         }
     } catch (err) {

@@ -6,7 +6,7 @@
             <fieldset class="fieldset w-full">
                 <legend class="fieldset-legend text-left">I want to pay</legend>
                 <label class="input w-full flex justify-between">
-                    <input type="text" class="grow" placeholder="Type here" v-model="amount" />
+                    <input type="text" class="grow" placeholder="Type here, min 50" v-model.number="amount" />
                     <span class="badge badge-neutral badge-xs">USD</span>
                 </label>
             </fieldset>
@@ -24,19 +24,19 @@
                 <select class="select w-full" v-model="payment_method_id">
                     <option disabled selected value="">+Select</option>
                     <option v-for="(item, i) in payments" :key="item.payment_method_id"
-                        v-bind:value="item.payment_method_id">{{ item.account_number }}</option>
+                        v-bind:value="item.payment_method_id">【{{ item.type }}】 {{ item.title }} ｜ {{ item.account_number }}</option>
                 </select>
                 <span class="label cursor-pointer" @click="$router.push('/billing')">+Bind a Card</span>
             </fieldset>
-            <label class="input w-full">
+            <label class="input w-full" v-if="payment_method_id">
                 CVV
-                <input type="text" class="grow" placeholder="Type here" v-model="cvv" />
+                <input type="text" class="grow" placeholder="Type here, for example: 100" v-model="cvv" />
             </label>
 
             <p class=" text-sm">Estimated price:1 USDT ≈ {{ quote?.price ?? '--' }} USD</p>
 
             <div class=" flex items-center justify-center w-full">
-                <button class=" btn btn-primary" @click="onSubmit"><span class="loading loading-spinner"
+                <button class=" btn btn-primary btn-wide" @click="onSubmit" :disabled="!amount || !payment_method_id || !cvv"><span class="loading loading-spinner"
                         v-if="loading"></span>Submit</button>
             </div>
         </div>
@@ -53,9 +53,7 @@
 </template>
 <script lang="tsx" setup>
 import { onMounted, ref, watchEffect } from 'vue';
-import { useRouter } from 'vue-router';
 import { legend } from '../legend'
-const router = useRouter();
 const payments = ref<LegendBaseTypes.PaymentMethod[]>([])
 const quote = ref<LegendBaseTypes.QuoteByFiatResponse>()
 const amount = ref()
@@ -99,6 +97,6 @@ watchEffect(async () => {
 })
 
 onMounted(async () => {
-    payments.value = await legend.getAllPaymentMethods();
+    payments.value = (await legend.getAllPaymentMethods()).filter(item=>item.is_expired==false);
 })
 </script>

@@ -5,10 +5,10 @@
             <Buy />
         </div>
 
-        <!-- <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Sell" />
+        <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="Sell" />
         <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-            <Sell />
-        </div> -->
+            尚未开放
+        </div>
     </div>
 </template>
 <script lang="tsx" setup>

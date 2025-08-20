@@ -5,35 +5,41 @@
                 <li class="step step-primary">Billing</li>
                 <li class="step">Card</li>
             </ul>
-            <label class="input input-bordered flex items-center gap-2">
+            <label class="input w-full">
                 date_of_birth
                 <input type="text" class="grow" v-model="model.date_of_birth" />
             </label>
-            <select class="select select-bordered w-full max-w-xs" placeholder="country" v-model="model.country">
-                <option v-for="item in countries" :key="item.id">{{ item.name_en }}</option>
-            </select>
-            <select class="select select-bordered w-full max-w-xs" placeholder="state" v-model="model.state">
-                <option v-for="item in states" :key="item.id">{{ item.name_en }}</option>
-            </select>
-            <label class="input input-bordered flex items-center gap-2">
+            <label class="select w-full">
+                country
+                <select v-model="model.country">
+                    <option v-for="item in countries" :key="item.id">{{ item.name_en }}</option>
+                </select>
+            </label>
+            <label class="select w-full">
+                state
+                <select v-model="model.state">
+                    <option v-for="item in states" :key="item.id">{{ item.name_en }}</option>
+                </select>
+            </label>
+            <label class="input w-full">
                 city
                 <input type="text" class="grow" v-model="model.city" />
             </label>
-            <label class="input input-bordered flex items-center gap-2">
+            <label class="input w-full">
                 address_1
                 <input type="text" class="grow" v-model="model.address_line_1" />
             </label>
-            <label class="input input-bordered flex items-center gap-2">
+            <label class="input w-full">
                 address_2
                 <input type="text" class="grow" v-model="model.address_line_2" />
             </label>
-            <label class="input input-bordered flex items-center gap-2">
+            <label class="input w-full">
                 zipcode
                 <input type="text" class="grow" v-model="model.zipcode" />
             </label>
 
             <div class=" flex justify-center items-center">
-                <button class="btn" @click="onSubmit">
+                <button class="btn btn-primary btn-wide" @click="onSubmit">
                     <span class="loading loading-spinner" v-if="loading"></span>
                     NEXT
                 </button>

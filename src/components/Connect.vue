@@ -1,8 +1,10 @@
 <template>
+  <div class="flex-1 flex flex-col items-center justify-center">
     <button class="btn btn-primary" @click="onConnect">
         <span class="loading loading-spinner" v-if="loading"></span>
         Connect
     </button>
+  </div>
 </template>
 <script lang="tsx" setup>
 import { ref } from 'vue';

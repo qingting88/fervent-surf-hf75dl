@@ -9,7 +9,7 @@ import Connect from './components/Connect.vue';
 
 
 const routes = [
-  { path: '/', component: Connect },
+  { path: '/',name:'app', component: Connect },
   { path: '/trade',name:'trade', component: Trade },
   { path: '/billing',name:'billing', component: Billing },
   { path: '/card/:uuid',name:'card', component: Card },
